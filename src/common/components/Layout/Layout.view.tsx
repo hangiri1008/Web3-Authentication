@@ -41,7 +41,6 @@ const mainStyle = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: pink;
 `;
 
 const footerStyle = css`

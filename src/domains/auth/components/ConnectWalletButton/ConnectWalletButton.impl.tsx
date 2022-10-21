@@ -4,6 +4,12 @@ import { formatEther } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
 import { IConnectWalletButton } from "./ConnectWalletButton.interface";
 import VConnectWalletButton from "./ConnectWalletButton.view";
+import { MetaMaskInpageProvider } from "@metamask/providers";
+declare global {
+  interface Window {
+    ethereum: MetaMaskInpageProvider;
+  }
+}
 
 const ConnectWalletButton: React.FC<IConnectWalletButton.IProps> = ({
   walletType,
@@ -21,21 +27,15 @@ const ConnectWalletButton: React.FC<IConnectWalletButton.IProps> = ({
   const [balance, setBalance] = useState("");
 
   const onWalletConnect = async () => {
-    // console.log(active);
-    // if (active) {
-    //   deactivate();
-    //   return;
-    // }
-    try {
-      await activate(injected, (error) => {
-        // 크롬 익스텐션 없을 경우 오류 핸들링
-        if ("/No Ethereum provider was found on window.ethereum/" + error)
-          throw new Error("Metamask 익스텐션을 설치해주세요");
-      });
-    } catch (err) {
-      alert(err);
-      window.open("https://metamask.io/download.html");
+    if (typeof window.ethereum !== "undefined") {
+      try {
+        await activate(injected);
+        return;
+      } catch (err) {
+        alert(err);
+      }
     }
+    window.open("https://metamask.io/download.html");
   };
 
   useEffect(() => {
