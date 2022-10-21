@@ -5,29 +5,31 @@ import { ILayout } from "./Layout.interface";
 const VLayout: React.FC<ILayout.IVProps> = ({ children }) => {
   return (
     <div css={layoutStyle}>
-      <header css={headerStyle}>
-        <h2>지갑 연결</h2>
-      </header>
-      <main css={mainStyle}>{children}</main>
-      <footer css={footerStyle}>
-        <h2>Web3-Authentication</h2>
-      </footer>
+      <div css={headerStyle}>
+        <h2>Connect Wallet</h2>
+      </div>
+      <div css={mainStyle}>{children}</div>
+      <div css={footerStyle}>
+        <h2>WEB3 Authentication</h2>
+      </div>
     </div>
   );
 };
 
 const layoutStyle = css`
   display: flex;
-  width: 100vw;
-  height: 100vh;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
 `;
 
 const headerStyle = css`
   width: 100%;
   height: 10%;
-  padding: 5px;
+  background-color: #000;
+  padding: 30px;
+  color: #fff;
   text-align: center;
 `;
 
@@ -35,8 +37,11 @@ const mainStyle = css`
   width: 100%;
   height: 80%;
   display: flex;
+  padding: 30px;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  background-color: pink;
 `;
 
 const footerStyle = css`
@@ -44,8 +49,8 @@ const footerStyle = css`
   height: 10%;
   background-color: #000;
   padding: 30px;
-  text-align: center;
   color: #fff;
+  text-align: center;
 `;
 
 export default VLayout;

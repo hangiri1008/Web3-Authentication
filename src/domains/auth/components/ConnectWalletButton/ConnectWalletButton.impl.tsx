@@ -1,5 +1,4 @@
 import { injected } from "@domains/auth/services/connectors";
-import Web3Service from "@domains/auth/services/web3.service";
 import { useWeb3React } from "@web3-react/core";
 import { formatEther } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
@@ -9,34 +8,6 @@ import VConnectWalletButton from "./ConnectWalletButton.view";
 const ConnectWalletButton: React.FC<IConnectWalletButton.IProps> = ({
   walletType,
 }) => {
-  // const [ethConnResult, setEthConnResult] = useState<any>();
-  // const [bridgeInfo, setBridgeInfo] = useState<any>();
-
-  // const onWalletConnect = async () => {
-  //   let connectionResult;
-  //   switch (walletType) {
-  //     case "metamask":
-  //       connectionResult = await Web3Service.connectMetamask();
-  //       setEthConnResult(connectionResult);
-  //     case "coinbase":
-  //       connectionResult = await Web3Service.connectCoinbase();
-  //       setEthConnResult(connectionResult);
-  //     // case "ledgis":
-  //     //   connectLedgisWallet();
-  //   }
-  // };
-
-  // const getEthBalance = async () => {
-  //   const balance = await Web3Service.getEthBalance(
-  //     ethConnResult.ethereumAddress,
-  //     "ETH"
-  //   );
-  //   setBridgeInfo({
-  //     address: ethConnResult.ethereumAddress,
-  //     providerType: walletType,
-  //     ethBalance: balance,
-  //   });
-  // };
   const {
     connector,
     library,
@@ -50,15 +21,15 @@ const ConnectWalletButton: React.FC<IConnectWalletButton.IProps> = ({
   const [balance, setBalance] = useState("");
 
   const onWalletConnect = async () => {
-    console.log(active);
-    if (active) {
-      deactivate();
-      return;
-    }
+    // console.log(active);
+    // if (active) {
+    //   deactivate();
+    //   return;
+    // }
     try {
       await activate(injected, (error) => {
         // 크롬 익스텐션 없을 경우 오류 핸들링
-        if ("/No Ethereum provider was found on window.ethereum/")
+        if ("/No Ethereum provider was found on window.ethereum/" + error)
           throw new Error("Metamask 익스텐션을 설치해주세요");
       });
     } catch (err) {
@@ -73,12 +44,13 @@ const ConnectWalletButton: React.FC<IConnectWalletButton.IProps> = ({
         ?.getBalance(account)
         .then((result: any) => setBalance(result._hex));
     }
-    console.log(library?.get);
   }, [account, library]);
 
   return (
     <VConnectWalletButton
+      isActive={active}
       onWalletConnect={onWalletConnect}
+      balance={balance}
       imageUrl={
         walletType === "metamask"
           ? "https://ibct-wallet-token-img.s3.ap-northeast-2.amazonaws.com/metamask.PNG"
@@ -88,10 +60,10 @@ const ConnectWalletButton: React.FC<IConnectWalletButton.IProps> = ({
       }
       content={
         walletType === "metamask"
-          ? "메타마스크"
+          ? "MetaMask"
           : walletType === "coinbase"
-          ? "코인베이스"
-          : "레지스"
+          ? "Coinbase"
+          : "Ledgis"
       }
     />
   );

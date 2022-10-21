@@ -3,19 +3,28 @@ import { IConnectWalletButton } from "./ConnectWalletButton.interface";
 import Button from "@mui/material/Button";
 
 const VConnectWalletButton: React.FC<IConnectWalletButton.IVProps> = ({
+  isActive,
+  balance,
   onWalletConnect,
   imageUrl,
   content,
 }) => {
   return (
     <div css={{ margin: "20px" }}>
-      <Button css={buttonStyle} onClick={onWalletConnect}>
-        <div css={contentStyle}>
-          <img src={imageUrl} css={imageStyle} alt="icon" />
-          {content}
+      {isActive ? (
+        <div>
+          <h2>
+            My {content} Wallet Balance: {balance}
+          </h2>
         </div>
-        <div style={{ fontSize: "0.5vw" }}>{/* {address} */}</div>
-      </Button>
+      ) : (
+        <Button css={buttonStyle} onClick={onWalletConnect}>
+          <div css={contentStyle}>
+            <img src={imageUrl} css={imageStyle} alt="icon" />
+            {content}
+          </div>
+        </Button>
+      )}
     </div>
   );
 };

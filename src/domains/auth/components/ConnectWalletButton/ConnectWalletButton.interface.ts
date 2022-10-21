@@ -3,7 +3,9 @@ export namespace IConnectWalletButton {
     walletType: string;
   }
   export interface IVProps {
+    isActive: boolean;
     onWalletConnect: () => void;
+    balance: string;
     imageUrl: string;
     content: string;
   }
