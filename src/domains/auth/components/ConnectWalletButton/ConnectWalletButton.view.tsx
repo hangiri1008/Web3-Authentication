@@ -3,26 +3,51 @@ import { IConnectWalletButton } from "./ConnectWalletButton.interface";
 import Button from "@mui/material/Button";
 
 const VConnectWalletButton: React.FC<IConnectWalletButton.IVProps> = ({
-  isActive,
-  balance,
-  onWalletConnect,
-  imageUrl,
-  content,
+  // isActive,
+  // signMessage,
+  // onWalletConnect,
+  connecting,
+  wallet,
+  connect,
+  disconnect,
+  readyToTransact,
+  sendTransaction,
+  // imageUrl,
+  // content,
 }) => {
   return (
     <div css={{ margin: "20px" }}>
-      {isActive ? (
-        <div>
-          <h2>
-            My {content} Wallet Balance: {balance}
-          </h2>
-        </div>
+      {connecting ? (
+        <Button css={buttonStyle}>Connecting</Button>
+      ) : wallet ? (
+        <>
+          <Button
+            css={buttonStyle}
+            onClick={() => {
+              disconnect({ label: wallet.label });
+            }}
+          >
+            Disconnect
+          </Button>
+          <Button
+            css={buttonStyle}
+            onClick={async () => {
+              const ready = await readyToTransact();
+              if (!ready) return;
+              sendTransaction();
+            }}
+          >
+            Transfer
+          </Button>
+        </>
       ) : (
-        <Button css={buttonStyle} onClick={onWalletConnect}>
-          <div css={contentStyle}>
-            <img src={imageUrl} css={imageStyle} alt="icon" />
-            {content}
-          </div>
+        <Button
+          css={buttonStyle}
+          onClick={() => {
+            connect();
+          }}
+        >
+          <div css={contentStyle}>Connect Wallet</div>
         </Button>
       )}
     </div>
@@ -51,4 +76,5 @@ const contentStyle = css`
   justify-content: center;
   align-items: center;
   display: flex;
+  color: black;
 `;
